@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Vue Example</title>
+    <!--libreria de bootstrap-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+    <!--libreria de vue-->
+      <script src="js/vue.js"></script>
+        
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div id="app">
+          <table class="table table-stripped" align="center">
+            <thead class="thead-dark">
+              <tr>
+                <th style="width:40px;"></th>
+                <th>Descripción</th>
+                <th style="width:200px;">Monto</th>
+                <th style="width:100px;">¿Cancelado?<th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td></td>
+                <td>
+                  <input type="text" class="form-control" v-model="nueva.nombre" />
+                </td>
+                <td>
+                  <input type="text" class="form-control" v-model="nueva.cantidad" />
+                </td>
+                <td>
+                  <button @click="add()" type="button" class="btn btn-success btn-block">Agregar</button>
+                </td>
+              </tr>
+            <!--no hay registros-->
+              <tr v-for="item, index in items">
+                <td>
+                  <button 
+                    @click="remove(index)"
+                    type="button" class="btn btn-danger btn-xs">
+                    <i class="glyphicon glyphicon-trash"></i>
+                  </button>
+                </td>
+                <td>{{ item.nombre }}</td>
+                <td>{{ item.cantidad}}</td>
+                <td class="text-center" >
+                  <button
+                    @click="change(item)"
+                    class="btn btn-default btn-sm"
+                    :class="{ 'btn-success': item.estado  }">
+
+                      <i v-if="item.estado" class="glyphicon glyphicon-ok"></i>
+                      <i v-if="!item.estado" class="glyphicon glyphicon-remove"></i>
+
+                    </button>
+                </td>
+              </tr>
+            </tbody>
+            <!-- tfoot-->
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+    <script>
+    var app = new Vue({
+      el: '#app', // Elemento
+      data: { // Parametros
+        nueva: {
+          nombre: '',
+          cantidad: 0
+        },
+        items: [{
+            nombre: 'Servicios',
+            cantidad: 200,
+            estado: false
+          },
+          {
+            nombre: 'Hosting de Anexsoft',
+            cantidad: 90,
+            estado: true
+          },
+        ]
+      },
+      methods: {
+        remove: function(index) {
+          this.items.splice(index, 1);
+        },
+        // Ecmascript 6 syntax
+        add() {
+          this.items.push({
+            nombre: this.nueva.nombre,
+            cantidad: parseFloat(this.nueva.cantidad),
+            estado: false
+          });
+
+          this.nueva.nombre = '';
+          this.nueva.cantidad = 0;
+        },
+        change(item) {
+          item.estado = !(item.estado);
+        }
+        //total(t)
+      }
+    });
+        </script>
+
+</body>
+</html>
